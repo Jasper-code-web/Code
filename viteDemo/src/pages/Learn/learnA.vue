@@ -1,13 +1,13 @@
 <template>
     <div>
-        这是测试
+        toRefs and computed
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

@@ -5,7 +5,7 @@
   </div>
   <router-view></router-view> -->
   <div id="app">
-    <a-layout :style="{ height: '100%'}">
+    <a-layout :style="{ height: '100%' }">
       <a-layout>
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
           <a-menu v-model:selectedKeys="selectedKeys2" v-model:openKeys="openKeys" theme="dark" mode="inline"
@@ -15,6 +15,14 @@
             </a-menu-item>
             <a-menu-item key="2">
               <router-link to="/about">关于页</router-link>
+            </a-menu-item>
+            <!-- <a-sub-menu>
+              <template #title>{{ routeList[2].meta.title }}</template>
+              <a-menu-item v-for="(child, index) in routeList[2].children" :key="index">
+                {{ child.meta.title }}</a-menu-item>
+            </a-sub-menu> -->
+            <a-menu-item key="3">
+              <router-link to="/test">学习</router-link>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
@@ -38,7 +46,7 @@
 
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, ref } from "vue";
 import {
   UserOutlined,
@@ -47,23 +55,10 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons-vue';
+const selectedKeys2 = ref<string[]>(["1"])
+const collapsed = ref<boolean>(false)
+const openKeys = ref<string[]>(["sub1"])
 
-export default defineComponent({
-  components: {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-  },
-  setup() {
-    return {
-      selectedKeys2: ref<string[]>(["1"]),
-      collapsed: ref<boolean>(false),
-      openKeys: ref<string[]>(["sub1"]),
-    };
-  },
-})
 </script>
 
 <style>

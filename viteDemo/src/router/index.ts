@@ -1,4 +1,5 @@
-import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, Router } from "vue-router";
+import routes from "./routes";
 
 //手写router
 // import {
@@ -6,35 +7,6 @@ import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from "vue-
 //     createWebHashHistory
 // } from './gRouter/index'
 
-import Home from "../pages/home.vue";
-import About from "../pages/about.vue";
-import Login from "@/pages/Login/index.vue";
-import Test from '@/pages/test.vue'
-
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-    children: [
-      {
-        path: '/test',
-        component: Test,
-        name: 'test'
-      }
-    ]
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: Login,
-  },
-];
 
 const router: Router = createRouter({
   history: createWebHashHistory(),
