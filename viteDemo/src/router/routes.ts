@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'learnA',
         component: LearnA,
         name: 'learn-a',
-        meta: {title: 'toRefs and computed'}
+        meta: {title: '响应性'}
       }
     ]
   },
