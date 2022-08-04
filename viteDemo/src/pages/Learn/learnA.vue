@@ -16,6 +16,9 @@
         <div @click="judegRef">点击判断dataType: {{refData.identification}}</div>
         <div @click="judegReac">点击判断dataType: {{reacData.identification}}</div>
     </a-card>
+    <a-card title="toRaw">
+        <div @click="judegRef">toRaw: 获取到reactive和readonly代理的原始对象: {{isFoo}}</div>
+    </a-card>
 </template>
 
 <script setup lang="ts">
@@ -44,6 +47,7 @@ function addCopy() {
     message.error('failed: target is readonly');
 }
 
+//isProxy检查对象是否是由reactive和readonly创建的proxy
 const refData = ref({identification: 'ref'})
 const reacData = reactive({identification: 'reactive'})
 function judegRef() {
@@ -52,6 +56,19 @@ function judegRef() {
 function judegReac() {
     message.info('是否是reactive或readyonly创建出的proxy:  ' + isProxy(reacData))
 }
+
+//toRaw返回reactive和readonly代理的原始对象
+const foo = {}
+const reactiveFoo = reactive(foo)
+const isFoo = (foo === toRaw(reactiveFoo))
+
+//markRaw标识一个对象，使其不能转换为proxy。返回对象本身
+const foo1 = markRaw({})
+console.log(isReactive(foo)) // false
+
+const bar = reactive({ foo1 })
+console.log(isReactive(bar.foo)) //false
+
 </script>
 
 <style scoped>
