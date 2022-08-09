@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { react } from '@babel/types';
 import { message } from 'ant-design-vue';
-import { ref, reactive, toRefs, readonly, isProxy } from 'vue'
+import { ref, reactive, toRefs, readonly, isProxy, shallowReactive, isReactive, toRaw, markRaw } from 'vue'
 
 //使用toRefs结构响应式数据，可以使结构出来的数据保持原有的响应式关系
 const testObj = reactive({
@@ -67,7 +67,18 @@ const foo1 = markRaw({})
 console.log(isReactive(foo)) // false
 
 const bar = reactive({ foo1 })
-console.log(isReactive(bar.foo)) //false
+console.log(isReactive(bar.foo1)) //false
+
+//shallowReactive: 创建一个响应式代理，它跟踪其自身property的响应性，但不执行嵌套对象的深层响应式转换（暴露原始值）
+const state = shallowReactive({
+    foo: 1,
+    nested: {
+        bar: 2
+    }
+})
+state.foo ++
+isReactive(state.nested)
+state.nested.bar ++
 
 </script>
 
