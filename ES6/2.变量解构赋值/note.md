@@ -50,6 +50,23 @@ let { foo: baz } = { foo: 'aaa', bar: 'bbb' };
 console.log('baz',baz) //aaa
 ```
 
+赋值给一个已经声明的变量
+
+```javascript
+let x
+{x} = {x: 1} //Uncaught SyntaxError: Unexpected token '='
+//不能将大括号放在行首，否则js会将{x}理解成代码块，所以会报错
+
+let x;
+({x} = {x: 1}) //1
+```
+
+
+
+
+
+
+
 
 
 
