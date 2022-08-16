@@ -2,7 +2,7 @@
  * @Author: Jasper-code-web 1156657702@qq.com
  * @Date: 2022-08-15 08:48:53
  * @LastEditors: Jasper-code-web 1156657702@qq.com
- * @LastEditTime: 2022-08-15 17:53:10
+ * @LastEditTime: 2022-08-16 17:34:38
  * @FilePath: \code\code\ES6\4.Proxy\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -91,34 +91,53 @@
 // let result = pipe(3).double.pow.reverseInt.get;
 // console.log('result',result)
 
+// const dom = new Proxy(
+//   {},
+//   {
+//     get(target, property) {
+//       return function (attrs = {}, ...children) {
+//         const el = document.createElement(property);
+//         for (let prop of Object.keys(attrs)) {
+//           el.setAttribute(prop, attrs[prop]);
+//         }
+//         for (let child of children) {
+//           if (typeof child === 'string') {
+//             child = document.createTextNode(child);
+//           }
+//           el.appendChild(child);
+//         }
+//         return el;
+//       };
+//     },
+//   }
+// );
 const dom = new Proxy({}, {
-    get(target, property) {
-      return function(attrs = {}, ...children) {
-        const el = document.createElement(property);
-        for (let prop of Object.keys(attrs)) {
-          el.setAttribute(prop, attrs[prop]);
+    get({}, property) {
+        return function(attrs = {}, ...children) {
+            const el = document.createElement(property)
+            for(let prop of Object.keys(attrs)) {
+                el.setAttribute(prop, attrs[prop])
+            }
+            for(let child of children) {
+                if(typeof child === 'string') {
+                    child = document.createTextNode(child)
+                }
+                el.appendChild(child)
+            }
+            return el
         }
-        for (let child of children) {
-          if (typeof child === 'string') {
-            child = document.createTextNode(child);
-          }
-          el.appendChild(child);
-        }
-        return el;
-      }
     }
-  });
-  
+})
 
 const el = dom.div(
   {},
-  "Hello, my name is ",
-  dom.a({ href: "//example.com" }, "Mark"),
-  ". I like:",
+  'Hello, my name is ',
+  dom.a({ href: '//example.com' }, 'Mark'),
+  '. I like:',
   dom.ul(
     {},
-    dom.li({}, "The web"),
-    dom.li({}, "Food"),
+    dom.li({}, 'The web'),
+    dom.li({}, 'Food'),
     dom.li({}, "…actually that's it")
   )
 );
