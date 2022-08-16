@@ -7,7 +7,6 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-
 // let obj = new Proxy({}, {
 //     get: (target, propKey, receiver) => {
 //         console.log(`getting ${propKey}`)
@@ -69,24 +68,59 @@
 // let arr = createArray('a', 'b', 'c')
 // console.log('arr[-2]',arr[-2])
 
-let pipe = function(value) {
-    let funcStack = []
-    let oproxy = new Proxy({}, {
-        get({}, fnName) {
-            if(fnName === 'get') {
-                return funcStack.reduce((val, fn) => {
-                    return fn(val)
-                }, value)
-            }
-            funcStack.push(window[fnName])
-            // return oproxy
-        }
-    })
-    return oproxy
-}
+//实现链式调用
+// function pipe(value) {
+//     let funcStack = []
+//     let oproxy = new Proxy({}, {
+//         get({}, fn) {
+//             if(fn === 'get') {
+//                 return funcStack.reduce((val, func) => {
+//                     return func(val)
+//                 }, value)
+//             }
+//             funcStack.push(window[fn])
+//             return oproxy
+//         }
+//     })
+//     return oproxy
+// }
 
-var double = n => n * 2;
-var pow    = n => n * n;
-var reverseInt = n => n.toString().split("").reverse().join("") | 0;
-let result = pipe(3).double.pow.reverseInt.get;
-console.log('result',result)
+// var double = n => n * 2;
+// var pow    = n => n * n;
+// var reverseInt = n => n.toString().split("").reverse().join("") | 0;
+// let result = pipe(3).double.pow.reverseInt.get;
+// console.log('result',result)
+
+const dom = new Proxy({}, {
+    get(target, property) {
+      return function(attrs = {}, ...children) {
+        const el = document.createElement(property);
+        for (let prop of Object.keys(attrs)) {
+          el.setAttribute(prop, attrs[prop]);
+        }
+        for (let child of children) {
+          if (typeof child === 'string') {
+            child = document.createTextNode(child);
+          }
+          el.appendChild(child);
+        }
+        return el;
+      }
+    }
+  });
+  
+
+const el = dom.div(
+  {},
+  "Hello, my name is ",
+  dom.a({ href: "//example.com" }, "Mark"),
+  ". I like:",
+  dom.ul(
+    {},
+    dom.li({}, "The web"),
+    dom.li({}, "Food"),
+    dom.li({}, "…actually that's it")
+  )
+);
+
+document.body.appendChild(el);
