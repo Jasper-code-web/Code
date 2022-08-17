@@ -111,10 +111,22 @@
 //     },
 //   }
 // );
+
+/**
+ * 通过Proxy的get方法监听dom调用的方法，方法名称就是要创建的dom
+ * 返回一个函数，函数可以传入两个参数。第一个参数是dom的attribute,第二个参数是dom的children列表
+ */
+/**
+ * 函数内部逻辑：
+ * 根据监听的dom名创建一个el
+ * 遍历attr并设置el的属性
+ * 遍历children并把child添加到el
+ * 返回el
+ */
 const dom = new Proxy({}, {
     get({}, property) {
         return function(attrs = {}, ...children) {
-            const el = document.createElement(property)
+            let el = document.createElement(property)
             for(let prop of Object.keys(attrs)) {
                 el.setAttribute(prop, attrs[prop])
             }
