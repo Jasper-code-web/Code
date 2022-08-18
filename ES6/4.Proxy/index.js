@@ -123,35 +123,55 @@
  * 遍历children并把child添加到el
  * 返回el
  */
-const dom = new Proxy({}, {
-    get({}, property) {
-        return function(attrs = {}, ...children) {
-            let el = document.createElement(property)
-            for(let prop of Object.keys(attrs)) {
-                el.setAttribute(prop, attrs[prop])
-            }
-            for(let child of children) {
-                if(typeof child === 'string') {
-                    child = document.createTextNode(child)
-                }
-                el.appendChild(child)
-            }
-            return el
-        }
+// const dom = new Proxy({}, {
+//     get({}, property) {
+//         return function(attrs = {}, ...children) {
+//             const el = document.createElement(property)
+//             for(let prop of Object.keys(attrs)) {
+//                 el.setAttribute(prop, attrs[prop])
+//             }
+//             for(let child of children) {
+//                 if(typeof child === 'string') {
+//                     child = document.createTextNode(child)
+//                 }
+//                 el.appendChild(child)
+//             }
+//             return el
+//         }
+//     }
+// })
+// const el = dom.div(
+//   {},
+//   'Hello, my name is ',
+//   dom.a({ href: '//example.com' }, 'Mark'),
+//   '. I like:',
+//   dom.ul(
+//     {},
+//     dom.li({}, 'The web'),
+//     dom.li({}, 'Food'),
+//     dom.li({}, "…actually that's it")
+//   )
+// );
+// document.body.appendChild(el);
+
+
+/**
+ * proxy实例的getReceiver
+ */
+// const proxy = new Proxy({}, {
+//     get: function(target, key, receiver) {
+//         return receiver
+//     }
+// })
+// console.log(proxy.getReceiver === proxy)
+
+const proxy = new Proxy({}, {
+    get(target, key, receiver) {
+        return receiver
     }
 })
+const d = Object.create(proxy)
+console.log('d.a',d.a)
+console.log(d.a === d)
 
-const el = dom.div(
-  {},
-  'Hello, my name is ',
-  dom.a({ href: '//example.com' }, 'Mark'),
-  '. I like:',
-  dom.ul(
-    {},
-    dom.li({}, 'The web'),
-    dom.li({}, 'Food'),
-    dom.li({}, "…actually that's it")
-  )
-);
 
-document.body.appendChild(el);
