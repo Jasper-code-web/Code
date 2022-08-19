@@ -1,8 +1,8 @@
 /*
  * @Author: Jasper-code-web 1156657702@qq.com
  * @Date: 2022-08-15 08:48:53
- * @LastEditors: Jasper-code-web 1156657702@qq.com
- * @LastEditTime: 2022-08-16 17:34:38
+ * @LastEditors: shenqing 1156657702@qq.com
+ * @LastEditTime: 2022-08-19 17:56:30
  * @FilePath: \code\code\ES6\4.Proxy\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -158,20 +158,36 @@
 /**
  * proxy实例的getReceiver
  */
-// const proxy = new Proxy({}, {
-//     get: function(target, key, receiver) {
-//         return receiver
-//     }
+//getReceiver方法是由p提供的，所以receiver指向p
+// const p = new Proxy({}, {
+//   get({}, key, receiver) {
+//     return receiver
+//   }
 // })
-// console.log(proxy.getReceiver === proxy)
+// console.log(p.getReceiver === p)
 
-const proxy = new Proxy({}, {
-    get(target, key, receiver) {
-        return receiver
-    }
+// const p = new Proxy({}, {
+//   get({}, key, receiver) {
+//     return receiver
+//   }
+// })
+// const d = Object.create(p)
+// console.log(d.s === d)
+
+const target = Object.defineProperties({}, {
+  foo: {
+    value: 123,
+    writable: false,
+    configurable: false
+  }
 })
-const d = Object.create(proxy)
-console.log('d.a',d.a)
-console.log(d.a === d)
 
+const handler = {
+  get(target, propKey) {
+    return 'abc'
+  }
+}
 
+const proxy = new Proxy(target, handler)
+
+proxy.foo
