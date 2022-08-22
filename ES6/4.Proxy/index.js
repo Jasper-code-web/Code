@@ -174,20 +174,85 @@
 // const d = Object.create(p)
 // console.log(d.s === d)
 
-const target = Object.defineProperties({}, {
-  foo: {
-    value: 123,
-    writable: false,
-    configurable: false
-  }
-})
+//通过writeable、configurable控制可读、可写
+// const target = Object.defineProperties({}, {
+//   foo: {
+//     value: 123,
+//     writable: false,
+//     configurable: false
+//   }
+// })
+// const handler = {
+//   get(target, propKey) {
+//     return 'abc'
+//   }
+// }
+// const proxy = new Proxy(target, handler)
+// proxy.foo
 
-const handler = {
-  get(target, propKey) {
-    return 'abc'
+
+
+/**
+ * set方法可以接收4个参数：对象、属性名、属性值、Proxy实例本身
+ */
+// let validator = {
+//   set(obj, prop, value, receiver) {
+//   }
+// }
+
+
+//利用get/set对对象属性进行拦截，每次操作以'_'开头的属性就会认为是私有属性，抛出错误
+// const handler = {
+//   get(target, key) {
+//     invariant(key, 'get')
+//     return target[key]
+//   },
+//   set(target, key, value) {
+//     invariant(key, 'set')
+//     target[key] = value
+//     return true
+//   }
+// }
+// function invariant(key, action) {
+//   if(key[0] === '_') {
+//     throw new Error(`Invalid attempt to ${action} private "${key}" property`)
+//   }
+// }
+// const target = {}
+// const proxy = new Proxy(target, handler)
+// proxy._prop
+
+
+
+/**
+ * apply方法
+ * 拦截函数的调用、call和apply操作
+ * 接收3个参数：目标对象、目标对象的上下文对象(this)、目标对象的参数数组
+ */
+// let handler = {
+//   apply(target, ctx, args) {
+//     return Reflect.apply(...arguments)
+//   }
+// }
+
+// let target = function(){
+//   return 'I am the target'
+// }
+// let handler = {
+//   apply(){
+//     return 'I am Proxy'
+//   }
+// }
+// const proxy = new Proxy(target, handler)
+// console.log('proxy()',proxy()) // I am Proxy
+
+let twice = {
+  apply(target, ctx, args) {
+    return Reflect.apply(...arguments) * 2
   }
 }
-
-const proxy = new Proxy(target, handler)
-
-proxy.foo
+function sum(left, right) {
+  return left + right
+}
+let proxy = new Proxy(sum, twice)
+console.log(proxy(1, 2))
