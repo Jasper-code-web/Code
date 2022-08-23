@@ -246,13 +246,60 @@
 // const proxy = new Proxy(target, handler)
 // console.log('proxy()',proxy()) // I am Proxy
 
-let twice = {
-  apply(target, ctx, args) {
-    return Reflect.apply(...arguments) * 2
-  }
-}
-function sum(left, right) {
-  return left + right
-}
-let proxy = new Proxy(sum, twice)
-console.log(proxy(1, 2))
+// let twice = {
+//   apply(target, ctx,args) {
+//     return Reflect.apply(...arguments) * 2
+//   }
+// }
+// function sum(left, right) {
+//   return left + right
+// }
+// let p = new Proxy(sum, twice)
+// console.log(p(1, 2))
+// console.log(p.call(null, 2, 3))
+// console.log(p.apply(null, [3, 4]))
+
+
+/**
+ * has方法
+ * 用来拦截hasProperty操作，判断对象是否拥有某个属性。in运算符是最典型的操作
+ * has监听的不是hasOwnproperty,所以不会判断属性是否是继承的
+ */
+
+
+//拦截_prop属性，不让in运算符识别到
+// let handler = {
+//   has(target, key) {
+//     if(key[0] === '_'){
+//       return false
+//     }
+//     return key in target
+//   }
+// }
+// let obj = {
+//   _prop: 1,
+//   prop: 2
+// }
+// let p = new Proxy(obj, handler)
+// console.log('_prop' in p)
+
+//Object.preventExtensions把对象标记为不可扩展(不可添加，但是可以删除)
+// let obj = {a: 1}
+// Object.preventExtensions(obj)
+// obj.b = 2
+// console.log(obj)
+// delete obj.a
+// console.log('obj',obj)
+
+
+//使用Object.preventExtensions方法使监听对象不可扩展。这时使用has方法就会报错
+// let obj = {a: 1}
+// Object.preventExtensions(obj)
+// let p = new Proxy(obj, {
+//   has(target, prop) {
+//     console.log(target, prop)
+//     return false
+//   }
+// })
+// console.log('a' in p)
+
