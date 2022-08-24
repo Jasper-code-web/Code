@@ -2,7 +2,7 @@
  * @Author: Jasper-code-web 1156657702@qq.com
  * @Date: 2022-08-15 08:48:53
  * @LastEditors: shenqing 1156657702@qq.com
- * @LastEditTime: 2022-08-19 17:56:30
+ * @LastEditTime: 2022-08-24 16:32:34
  * @FilePath: \code\code\ES6\4.Proxy\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -154,7 +154,6 @@
 // );
 // document.body.appendChild(el);
 
-
 /**
  * proxy实例的getReceiver
  */
@@ -190,8 +189,6 @@
 // const proxy = new Proxy(target, handler)
 // proxy.foo
 
-
-
 /**
  * set方法可以接收4个参数：对象、属性名、属性值、Proxy实例本身
  */
@@ -199,7 +196,6 @@
 //   set(obj, prop, value, receiver) {
 //   }
 // }
-
 
 //利用get/set对对象属性进行拦截，每次操作以'_'开头的属性就会认为是私有属性，抛出错误
 // const handler = {
@@ -221,8 +217,6 @@
 // const target = {}
 // const proxy = new Proxy(target, handler)
 // proxy._prop
-
-
 
 /**
  * apply方法
@@ -259,13 +253,11 @@
 // console.log(p.call(null, 2, 3))
 // console.log(p.apply(null, [3, 4]))
 
-
 /**
  * has方法
  * 用来拦截hasProperty操作，判断对象是否拥有某个属性。in运算符是最典型的操作
  * has监听的不是hasOwnproperty,所以不会判断属性是否是继承的
  */
-
 
 //拦截_prop属性，不让in运算符识别到
 // let handler = {
@@ -291,7 +283,6 @@
 // delete obj.a
 // console.log('obj',obj)
 
-
 //使用Object.preventExtensions方法使监听对象不可扩展。这时使用has方法就会报错
 // let obj = {a: 1}
 // Object.preventExtensions(obj)
@@ -302,7 +293,6 @@
 //   }
 // })
 // console.log('a' in p)
-
 
 //has()方法不拦截for...in循环
 // let stu = {name: 'Jasper', score: 59}
@@ -321,3 +311,63 @@
 // for(let a in oproxy1) {
 //   console.log(oproxy1[a]) //Jasper 59
 // }
+
+/**
+ * target: 目标对象(construct拦截的是构造函数，所以target必须是一个函数)
+ * args: 构造函数的参数数组
+ * newTarget: 创造实例对象时，new命令作用的构造函数(创建出来的实例)
+ * 必须返回一个对象，否则会报错
+ */
+// const handler = {
+//   construct(target, args, newTarget) {
+//     return new target(...args)
+//   }
+// }
+
+// const p = new Proxy(function() {}, {
+//   construct(target, args, newTarget) {
+//     console.log('newTarget',newTarget)
+//     return {value: args[0] * 10}
+//   }
+// })
+// console.log((new p(1)).value) //10
+
+/**
+ * 构造函数的this指向handler,不指向target
+ */
+// const handler = {
+//   construct(target, args) {
+//     console.log(this === handler)
+//     return new target(...args)
+//   }
+// }
+// const p = new Proxy(function() {}, handler)
+// console.log(new p()) //true
+
+/**
+ * 拦截delete操作(如果返回false或者抛出错误，属性不会被删除)
+ * @param {*} target
+ * @param {*} key
+ */
+// deleteProperty(target, key) {}
+// 目标对象自身的不可配置属性(configurable),不能被deleteProperty删除,否则报错
+
+
+/**
+ * @discription: 拦截Object.defineProperty()
+ * @param {*} target
+ * @param {*} key
+ * @param {*} descriptor
+ * @return {*}
+ */
+//如果目标对象不可扩展
+// function defineProperty(target, key, descriptor) {}
+
+let handler = {
+  defineProperty(target, key, descriptor) {
+    return false
+  }
+}
+let p = new Proxy({}, handler)
+Object.defineProperty(p, 'a', { configurable: true, enumerable: true, value: 10})
+console.log(p)
