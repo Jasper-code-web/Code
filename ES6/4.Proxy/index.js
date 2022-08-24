@@ -303,3 +303,21 @@
 // })
 // console.log('a' in p)
 
+
+//has()方法不拦截for...in循环
+// let stu = {name: 'Jasper', score: 59}
+// let stu1 = {name: 'Andy', score: 99}
+// let handler = {
+//   has(target, prop) {
+//     if(prop === 'score' && target[prop] < 60) {
+//       return false
+//     }
+//     return prop in target
+//   }
+// }
+// let oproxy1 = new Proxy(stu, handler)
+// let oproxy2 = new Proxy(stu1, handler)
+
+// for(let a in oproxy1) {
+//   console.log(oproxy1[a]) //Jasper 59
+// }
