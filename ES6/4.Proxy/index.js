@@ -2,7 +2,7 @@
  * @Author: Jasper-code-web 1156657702@qq.com
  * @Date: 2022-08-15 08:48:53
  * @LastEditors: shenqing 1156657702@qq.com
- * @LastEditTime: 2022-08-24 16:32:34
+ * @LastEditTime: 2022-08-25 17:44:35
  * @FilePath: \code\code\ES6\4.Proxy\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -354,20 +354,45 @@
 
 
 /**
- * @discription: 拦截Object.defineProperty()
+ * @discription: 拦截Object.defineProperty()、proxy.property = value
  * @param {*} target
  * @param {*} key
  * @param {*} descriptor
- * @return {*}
+ * @return {boolean}
  */
 //如果目标对象不可扩展
 // function defineProperty(target, key, descriptor) {}
 
-let handler = {
-  defineProperty(target, key, descriptor) {
-    return false
-  }
-}
-let p = new Proxy({}, handler)
-Object.defineProperty(p, 'a', { configurable: true, enumerable: true, value: 10})
-console.log(p)
+// let handler = {
+//   defineProperty(target, key, descriptor) {
+//     console.log(target, key)
+//   }
+// }
+// let p = new Proxy({}, handler)
+// p.a = 1
+// console.log('p',p)
+
+
+//返回对象一个自有属性的属性描述符
+// let obj = {
+//   a: 1
+// }
+// let desc = Object.getOwnPropertyDescriptor(obj, 'a')
+// console.log('desc',desc)
+
+// 拦截Object.getOwnPropertyDescriptor
+// handler.getOwnPropertyDescriptor(target, key)
+
+//拦截获取对象原型的操作
+// handler.getPrototypeOf(target)
+
+
+//判断对象是否可扩展
+//Object.isExtensible()
+//handler.isExtensible(target)监听上述方法
+
+//用来拦截对象自身属性的读取操作
+//handler.ownKeys(target)
+//例如：Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()、Object.keys()、for...in
+
+
