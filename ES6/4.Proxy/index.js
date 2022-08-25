@@ -69,27 +69,27 @@
 // console.log('arr[-2]',arr[-2])
 
 //实现链式调用
-// function pipe(value) {
-//     let funcStack = []
-//     let oproxy = new Proxy({}, {
-//         get({}, fn) {
-//             if(fn === 'get') {
-//                 return funcStack.reduce((val, func) => {
-//                     return func(val)
-//                 }, value)
-//             }
-//             funcStack.push(window[fn])
-//             return oproxy
-//         }
-//     })
-//     return oproxy
-// }
+function pipe(value) {
+    let funcStack = []
+    let oproxy = new Proxy({}, {
+        get({}, fn) {
+            if(fn === 'get') {
+                return funcStack.reduce((val, func) => {
+                    return func(val)
+                }, value)
+            }
+            funcStack.push(window[fn])
+            return oproxy
+        }
+    })
+    return oproxy
+}
 
-// var double = n => n * 2;
-// var pow    = n => n * n;
-// var reverseInt = n => n.toString().split("").reverse().join("") | 0;
-// let result = pipe(3).double.pow.reverseInt.get;
-// console.log('result',result)
+var double = n => n * 2;
+var pow    = n => n * n;
+var reverseInt = n => n.toString().split("").reverse().join("") | 0;
+let result = pipe(3).double.pow.reverseInt.get;
+console.log('result',result)
 
 // const dom = new Proxy(
 //   {},
@@ -396,3 +396,14 @@
 //例如：Object.getOwnPropertyNames()、Object.getOwnPropertySymbols()、Object.keys()、for...in
 
 
+//使用Proxy代理，this会指向proxy代理
+// const target = {
+//     m: function() {
+//         console.log(this === proxy)
+//         console.log('this',this)
+//     }
+// }
+// const handler = {}
+// const proxy = new Proxy(target, handler)
+// target.m()
+// proxy.m()
