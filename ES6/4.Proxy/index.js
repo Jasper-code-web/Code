@@ -2,7 +2,7 @@
  * @Author: Jasper-code-web 1156657702@qq.com
  * @Date: 2022-08-15 08:48:53
  * @LastEditors: shenqing 1156657702@qq.com
- * @LastEditTime: 2022-08-25 17:44:35
+ * @LastEditTime: 2022-08-26 10:09:56
  * @FilePath: \code\code\ES6\4.Proxy\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -51,6 +51,12 @@
 // console.log('obj',obj)
 // obj.foo
 
+
+/**
+ * @discription: get
+ * @return {*}
+ */
+
 // function createArray(...element) {
 //     let handler = {
 //         get(target, propKey, receiver) {
@@ -69,48 +75,28 @@
 // console.log('arr[-2]',arr[-2])
 
 //实现链式调用
-function pipe(value) {
-    let funcStack = []
-    let oproxy = new Proxy({}, {
-        get({}, fn) {
-            if(fn === 'get') {
-                return funcStack.reduce((val, func) => {
-                    return func(val)
-                }, value)
-            }
-            funcStack.push(window[fn])
-            return oproxy
-        }
-    })
-    return oproxy
-}
-
-var double = n => n * 2;
-var pow    = n => n * n;
-var reverseInt = n => n.toString().split("").reverse().join("") | 0;
-let result = pipe(3).double.pow.reverseInt.get;
-console.log('result',result)
-
-// const dom = new Proxy(
-//   {},
-//   {
-//     get(target, property) {
-//       return function (attrs = {}, ...children) {
-//         const el = document.createElement(property);
-//         for (let prop of Object.keys(attrs)) {
-//           el.setAttribute(prop, attrs[prop]);
+// function pipe(value) {
+//     let funcStack = []
+//     let oproxy = new Proxy({}, {
+//         get({}, fn) {
+//             if(fn === 'get') {
+//                 return funcStack.reduce((val, func) => {
+//                     return func(val)
+//                 }, value)
+//             }
+//             funcStack.push(window[fn])
+//             return oproxy
 //         }
-//         for (let child of children) {
-//           if (typeof child === 'string') {
-//             child = document.createTextNode(child);
-//           }
-//           el.appendChild(child);
-//         }
-//         return el;
-//       };
-//     },
-//   }
-// );
+//     })
+//     return oproxy
+// }
+
+// var double = n => n * 2;
+// var pow    = n => n * n;
+// var reverseInt = n => n.toString().split("").reverse().join("") | 0;
+// let result = pipe(3).double.pow.reverseInt.get;
+// console.log('result',result)
+
 
 /**
  * 通过Proxy的get方法监听dom调用的方法，方法名称就是要创建的dom
