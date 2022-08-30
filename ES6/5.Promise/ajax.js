@@ -8,7 +8,7 @@ const getHttp = function(url) {
             }
         }
         const client = new XMLHttpRequest()
-        client.open("GET", url)
+        client.open("POST", url)
         client.onreadystatechange = handler
         client.responseType = 'json'
         client.setRequestHeader("Accept", "application/json")
@@ -18,7 +18,7 @@ const getHttp = function(url) {
     return promise
 }
 
-getHttp("/test.json").then((res) => {
+getHttp("/getUserInfo").then((res) => {
     console.log('res',res)
 }, (error) => {
     console.log('error',error)
