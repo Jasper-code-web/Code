@@ -1,25 +1,22 @@
-const getHttp = function(url) {
-    const promise = new Promise((resolve, reject) => {
-        const handler = function() {
-            if(this.readyState !== 4) {
-                return
+const $post = function(url) {
+    return new Promise((resolve, reject) => {
+        function handler() {
+            if(this.readyState !== 4) return
+            if(this.status === 200) {
+                resolve(this.response)
             } else {
                 reject(new Error(this.statusText))
             }
         }
         const client = new XMLHttpRequest()
-        client.open("POST", url)
+        client.open("post", url)
         client.onreadystatechange = handler
-        client.responseType = 'json'
+        client.responseType = "json"
         client.setRequestHeader("Accept", "application/json")
         client.send()
     })
-
-    return promise
 }
-
-getHttp("/getUserInfo").then((res) => {
-    console.log('res',res)
-}, (error) => {
-    console.log('error',error)
+$post('/getUserInfo').then(user => {
+    console.log(user)
 })
+
