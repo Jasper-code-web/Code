@@ -5,7 +5,6 @@ const app = express();
 const port = "9000";
 
 const mw = function (req, res, next) {
-  console.log("这是一个中间键");
   next();
 };
 app.use(mw);
@@ -38,8 +37,6 @@ app.post("/getUserInfo", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(data.toString());
-    //   res.writeHead(200, { "Content-Type": "application/json" });
       res.send(data.toString());
     }
     res.end();
