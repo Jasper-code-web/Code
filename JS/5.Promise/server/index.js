@@ -32,8 +32,8 @@ app.get("/ajax.js", (req, res) => {
   });
 });
 
-app.post("/getUserInfo", (req, res) => {
-  fs.readFile("./userInfo.json", (err, data) => {
+app.get("/index.js", (req, res) => {
+  fs.readFile(`.${req.path}`, (err, data) => {
     if (err) {
       console.log(err);
     } else {
@@ -43,6 +43,18 @@ app.post("/getUserInfo", (req, res) => {
   });
 });
 
+app.post("/getUserInfo", (req, res) => {
+  fs.readFile("./userInfo.json", (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // res.writeHead(200, { "Content-Type": "application/json" });
+      res.send(data.toString());
+    }
+    res.end();
+  });
+});
+
 app.listen(port, () => {
-  console.log(`Server running at http://127.0.0.1:${port}/`);
+  console.log(`Server running at http://localhost:${port}/`);
 });
