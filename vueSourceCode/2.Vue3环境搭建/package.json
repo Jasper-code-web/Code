@@ -8,5 +8,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "vue": "^3.2.39"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.7",
+    "minimist": "^1.2.6",
+    "typescript": "^4.8.3"
+  }
 }

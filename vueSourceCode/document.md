@@ -40,17 +40,28 @@ console.log('total2',total2)
 * 我们需要有一个虚拟DOM，调用渲染方法将虚拟DOM渲染成真实DOM（缺点就是虚拟DOM编写麻烦）
 * 专门写个编译时可以将模板编译成虚拟DOM（在构建的时候进行编译性能更高，不需要在运行的时候进行编译，Vue3在编译中做了很多优化）
 
-## 环境搭建
+# Menorepo (monolithic repository)
+
+在一个项目仓库（repo)管理多个模块（package),不同于一个仓库管理一个包。Vue3使用Memorepo方式管理
+
+
+
+## Menorepo环境搭建
 
 pnpm初始化
 
-```
+```javascript
 npm i pnpm -g
 
-npmp init
+pnpm init
+
+//在根目录安装一个包
+pnpm i package-name -w
+//比如安装vue
+pnpm i vue -w
 ```
 
-
+安装的包会放在node_modules路径下，而包的依赖包会全部放在node_modules/.pnpm路径下共享
 
 
 
