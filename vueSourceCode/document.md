@@ -42,32 +42,87 @@ console.log('total2',total2)
 
 # Menorepo (monolithic repository)
 
-在一个项目仓库（repo)管理多个模块（package),不同于一个仓库管理一个包。Vue3使用Memorepo方式管理
+在一个项目仓库（repo)管理多个模块（package),不同于一个仓库管理一个包。Vue3使用Memorepo方式管理。pnpm(performant npm 性能好的npm) 包管理工具提供了Menorepo方式管理包，所以使用pnpm工具管理包。
 
-
-
-## Menorepo环境搭建
-
-pnpm初始化
-
+## Menorepo环境搭建（pnpm）
 ```javascript
 npm i pnpm -g
 
 pnpm init
 
-//在根目录安装一个包
+//在workspace(根目录)安装一个包，不加-w会报错
 pnpm i package-name -w
 //比如安装vue
 pnpm i vue -w
 ```
 
-安装的包会放在node_modules路径下，而包的依赖包会全部放在node_modules/.pnpm路径下共享
+安装的包会放在node_modules路径下，而包的依赖包会全部放在node_modules/.pnpm路径下共享。
+
+### 1.   .npmrc配置文件
+
+pnpm从命令行、环境变量和.npmrc文件中获取其配置
+
+* shamfully-hoist配置属性可以让安装的包的依赖包同样直接放在node_modules目录下，不用放在node_modules/.pnpm路径下
+
+  <img src="E:\代码\前端\Code\vueSourceCode\note-image\.npmrc.png" align="left"  />
 
 
 
+### 2.通过pnpm-workespace.yaml文件，定义工作空间的根目录
+
+在根目录创建pnpm-workspace.yaml配置文件,并在里面做如下配置
+
+```
+packages: 
+	- 'packapges/* '表示所有的包都放在packages目录下面
+```
+
+<img src="E:\代码\前端\Code\vueSourceCode\note-image\pnpm-workspace.yaml.png" style="zoom:100%;" align="left" />
+
+### 3. packages目录下包的基本文件结构
+
+<img src="E:\代码\前端\Code\vueSourceCode\note-image\目录.png" style="zoom:100%;" align="left" />
+
+```json
+打包配置 
+"buildOptions": {
+    "name": "VueReactivity",
+    "formats": [ //打包规则
+      "global", //浏览器
+      "cjs", // common js
+      "esm-bundler" //es module
+    ]
+  },
+```
 
 
 
+### 4.初始化ts
+
+![](E:\代码\前端\Code\vueSourceCode\note-image\初始化ts.png)
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "dist", //输出的目录
+    "sourceMap": true, //采用sourceMap
+    "target": "ES2016", //目标语法
+    "module": "esnext", //模块格式
+    "moduleResolution": "Node", //模块解析方式
+    "strict": false, //严格模式
+    "resolveJsonModule": true, //解析json模块
+    "esModuleInterop": true, //允许通过es6语法引入commonjs模块
+    "jsx": "preserve", //jsx 不转义
+    "lib": ["ESNext","dom"], //支持的类库
+    "baseUrl": ".", //基础路径为自己
+    "paths": {
+      "@vue/*": ["packages/*/src"] //当引入的路径为"@vue/*"时，去"packages路径下找文件"
+    }
+  }
+}
+```
+
+ 
 
 
 

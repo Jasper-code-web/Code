@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "dist", //输出的目录
+    "sourceMap": true, //采用sourceMap
+    "target": "ES2016", //目标语法
+    "module": "esnext", //模块格式
+    "moduleResolution": "Node", //模块解析方式
+    "strict": false, //严格模式
+    "resolveJsonModule": true, //解析json模块
+    "esModuleInterop": true, //允许通过es6语法引入commonjs模块
+    "jsx": "preserve", //jsx 不转义
+    "lib": ["ESNext","dom"], //支持的类库
+    "baseUrl": ".", //基础路径为自己
+    "paths": {
+      "@vue/*": ["packages/*/src"] //当引入的路径为"@vue/*"时，去"packages路径下找文件"
+    }
+  }
+}
