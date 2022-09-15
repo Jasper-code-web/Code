@@ -12,7 +12,7 @@
     "lib": ["ESNext","dom"], //支持的类库
     "baseUrl": ".", //基础路径为自己
     "paths": {
-      "@vue/*": ["packages/*/src"] //当引入的路径为"@vue/*"时，去"packages路径下找文件"
+      "@vue/*": ["package/*/src"] //当引入的路径为"@vue/*"时，去"packages路径下找文件"
     }
   }
 }
