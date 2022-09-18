@@ -5,7 +5,7 @@ const {build} = require("esbuild") //es6打包。支持ts，不会校验ts
 
 console.log('args',args)
 const target = args._[0] || "reactivity"
-const format = args.f[0] || "global"
+const format = args.f || "global"
 
 //开发环境单个打包
 const pkg = require(resolve(__dirname, `../package/${target}/package.json`))
@@ -17,7 +17,7 @@ const outputFormat = format.startsWith("global") ? "iife" : format === "cjs" ? "
 const outfile = resolve(__dirname, `../package/${target}/dist/${target}.${format}.js`)
 
 build({
-    entryPoints: [resolve(__dirname, `../packages/${target}/src/index.ts`)],
+    entryPoints: [resolve(__dirname, `../package/${target}/src/index.ts`)],
     outfile,
     bundle: true, //把所有的包全部打包到一起
     sourcemap: true, 
@@ -30,5 +30,5 @@ build({
         }
     }
 }).then(() => {
-    console.log("watch")
+    console.log("build success")
 })
