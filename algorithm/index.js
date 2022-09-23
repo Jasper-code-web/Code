@@ -23,22 +23,23 @@
  * @param {ListNode} l2
  * @return {ListNode}
  */
- var addTwoNumbers = function(l1, l2) {
+ var addTwoNumbers2 = function (l1, l2) {
     function getNode(list, nextNode, outcome) {
-        if(list) {
-            outcome.push(list.val)
+        outcome.push(list.val)
+        if (nextNode) {
             getNode(nextNode, nextNode.next, outcome)
         }
     }
     function sum(arr1, arr2) {
-        num1 = Number(arr1.reverse().join())
-        num2 = Number(arr2.reverse().join())
-        return (num1 + num2).toString().split('')
+        num1 = BigInt(arr1.reverse().join(''))
+        num2 = BigInt(arr2.reverse().join(''))
+        console.log(num1, num2)
+        return (num1 + num2).toString().split('').reverse()
     }
     function createList(arr) {
         let head = new ListNode(arr[0])
         let currentNode = head
-        for(let i = 1; i < arr.length; i ++) {
+        for (let i = 1; i < arr.length; i++) {
             const node = new ListNode(arr[i])
             currentNode = appendNode(currentNode, node)
         }
@@ -54,7 +55,7 @@
         getNode(l1, l1.next, outcome1)
         getNode(l2, l2.next, outcome2)
         let total = sum(outcome1, outcome2)
-        // let total = sum(l1, l2)
+        console.log(total)
         return createList(total)
     }
     return master()
