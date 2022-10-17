@@ -2,7 +2,7 @@
  * @Author: shenqing 1156657702@qq.com
  * @Date: 2022-09-20 14:48:51
  * @LastEditors: shenqing 1156657702@qq.com
- * @LastEditTime: 2022-10-14 16:56:56
+ * @LastEditTime: 2022-10-17 10:16:39
  * @FilePath: \code\code\algorithm\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -356,4 +356,37 @@
 //         }
 //         iMap.set(nums[i], i)
 //     }
+// };
+
+/**
+ * @discription: No.454
+ * O: O(n ^ 2)
+ * type: hash
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @param {number[]} nums3
+ * @param {number[]} nums4
+ * @return {number}
+ */
+// var fourSumCount = function (nums1, nums2, nums3, nums4) {
+//     const twoSumMap = new Map()
+//     let count = 0
+
+//     for(a of nums1) {
+//         for(b of nums2) {
+//             let sum = a + b
+//             twoSumMap.set(sum, (twoSumMap.get(sum) || 0) + 1)
+//         }
+//     }
+
+//     for(c of nums3) {
+//         for(d of nums4) {
+//             let sum = c + d
+//             if(twoSumMap.has(0 - sum)) {
+//                 count += twoSumMap.get(0 - sum)
+//             }
+//         }
+//     }
+
+//     return count
 // };
