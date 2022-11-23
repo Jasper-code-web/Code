@@ -8,7 +8,7 @@
             </svg>
             <div class="menu-select">
                 <div class="tab" v-for="routeItem of routes" :key="routeItem.meta?.id">
-                    <router-link :to="routeItem.path" v-if="routeItem.path !== '/'">{{routeItem.meta?.title}} </router-link>
+                    <router-link :to="routeItem.path" v-if="routeItem.path !== '/'" :class="{'active': route.path === routeItem.path}">{{routeItem.meta?.title}} </router-link>
                 </div>
             </div>
         </div>
@@ -23,14 +23,15 @@
 import routes from '@/router/route'
 import { useRoute } from 'vue-router';
 
-console.log(routes)
+const route = useRoute()
+console.log(route)
 </script>
 
 <style scoped lang="less">
 .menu {
     width: 100%;
     height: 60px;
-    box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 2px 4px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,6 +48,12 @@ console.log(routes)
 
     .tab {
         margin: 0 20px;
+        a{
+            color: #000;
+        }
+        .active{
+            color: #1D8ffb;
+        }
     }
 }
 </style>
