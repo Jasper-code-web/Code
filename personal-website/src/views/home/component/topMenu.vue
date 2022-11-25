@@ -1,5 +1,5 @@
 <template>
-    <div class="menu">
+    <div class="menu-tabs">
         <div class="left-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="125px"
                 height="23px">
@@ -8,27 +8,45 @@
             </svg>
             <div class="menu-select">
                 <div class="tab" v-for="routeItem of routes" :key="routeItem.meta?.id">
-                    <router-link :to="routeItem.path" v-if="routeItem.path !== '/'" :class="{'active': route.path === routeItem.path}">{{routeItem.meta?.title}} </router-link>
+                    <router-link :to="routeItem.path" v-if="routeItem.path !== '/'"
+                        :class="{ 'active': route.path === routeItem.path }">{{ routeItem.meta?.title }} </router-link>
                 </div>
             </div>
         </div>
         <div class="right-wrap">
-            <a-button style="width: 80px; margin-right: 20px; background-color: #E2E2E5; border-radius: 4px;">登录</a-button>
-            <a-button style="width: 80px; background-color: #1D8FFB; border-radius: 4px;" type="primary">注册</a-button>
+            <a-button style="width: 80px; margin-right: 20px; background-color: #E2E2E5; border-radius: 4px;" @click="changeModal(1)">登录
+            </a-button>
+            <a-button style="width: 80px; background-color: #1D8FFB; border-radius: 4px;" type="primary" @click="changeModal(2)">注册</a-button>
         </div>
+        <a-modal v-model:visible="visible" :bodyStyle="modalStyle" :centered="true" :footer="null" width="366px">
+            <div class="login-wrap">
+                <div class="title">登录</div>
+                
+            </div>
+        </a-modal>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import type{ Ref } from 'vue';
 import routes from '@/router/route'
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
-console.log(route)
+const visible: Ref<boolean> = ref(false)
+const modalStyle = {
+    borderRadius: '10px'
+}
+
+function changeModal(type: number) {
+    visible.value = true
+    console.log(type)
+}
 </script>
 
 <style scoped lang="less">
-.menu {
+.menu-tabs {
     width: 100%;
     height: 60px;
     box-shadow: 0px 2px 4px 3px rgba(0, 0, 0, 0.1);
@@ -48,12 +66,23 @@ console.log(route)
 
     .tab {
         margin: 0 20px;
-        a{
+
+        a {
             color: #000;
         }
-        .active{
+
+        .active {
             color: #1D8ffb;
         }
+    }
+}
+
+.login-wrap{
+    width: 100%;
+    margin-top: 20px;
+    .title{
+        width: 100%;
+        text-align: center;
     }
 }
 </style>
