@@ -1,10 +1,10 @@
 <template>
     <div>
-        <a-modal v-model:visible="visible" :bodyStyle="modalStyle" :centered="true" :footer="null" width="366px">
+        <a-modal v-model:visible="visible" :bodyStyle="modalStyle" :centered="true" :footer="null" width="366px" @cancel="closeModal">
             <div class="login-wrap">
                 <div class="title">登录</div>
                 <a-form style="margin-top: 20px;" :model="formState" name="basic" :wrapper-col="{ span: 24 }"
-                    autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed">
+                    autocomplete="off">
                     <a-form-item name="username" :rules="[{ required: true, message: '请输入邮箱' }]">
                         <a-input v-model:value="formState.username" placeholder="请输入邮箱" />
                     </a-form-item>
@@ -35,7 +35,9 @@ export interface Props {
     visible?: boolean
     type?: number
 }
-
+const emit = defineEmits<{
+    (e: 'changeVisible', type: boolean): void
+}>()
 const props = withDefaults(defineProps<Props>(), {
     visible: false
 })
@@ -44,6 +46,7 @@ watch(
     () => props.visible,
     () => {
         console.log('visible',visible)
+        visible.value = props.visible
     }
 )
 
@@ -60,14 +63,9 @@ const formState = reactive<FormState>({
     password: '',
     remember: true,
 });
-
-const onFinish = (values: any) => {
-    console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-};
+function closeModal() {
+    emit('changeVisible', false)
+}
 </script>
 
 <style scoped lang="less">

@@ -24,7 +24,7 @@
             </div>
 
         </div>
-        <login-modal :visible="visible" />
+        <login-modal :visible="visible" @change-visible="switchVisible(false)" />
     </div>
 </template>
 
@@ -40,8 +40,13 @@ const visible: Ref<boolean> = ref(false)
 
 
 function changeModal(type: number) {
-    visible.value = true
+    switchVisible(true)
 }
+
+function switchVisible(state: boolean) {
+    visible.value = state
+}
+
 </script>
 
 <style scoped lang="less">
