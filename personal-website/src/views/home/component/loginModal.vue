@@ -1,8 +1,9 @@
 <template>
     <div>
-        <a-modal v-model:visible="visible" :bodyStyle="modalStyle" :centered="true" :footer="null" width="366px" @cancel="closeModal">
+        <a-modal v-model:visible="visible" :bodyStyle="modalStyle" :centered="true" :footer="null" width="366px"
+            @cancel="closeModal">
             <div class="login-wrap">
-                <div class="title">登录</div>
+                <div class="title">{{ type === 1 ? '登录' : '注册' }}</div>
                 <a-form style="margin-top: 20px;" :model="formState" name="basic" :wrapper-col="{ span: 24 }"
                     autocomplete="off">
                     <a-form-item name="username" :rules="[{ required: true, message: '请输入邮箱' }]">
@@ -11,6 +12,12 @@
 
                     <a-form-item name="password" :rules="[{ required: true, message: '请输入密码' }]">
                         <a-input-password v-model:value="formState.password" placeholder="请输入密码" />
+                    </a-form-item>
+                    <a-form-item name="password" :rules="[{ required: true, message: '请输入验证码' }]" v-if="type === 2">
+                        <div style="display: flex;">
+                            <a-input v-model:value="formState.password" placeholder="请输入验证码" />
+                            <a-button>验证码</a-button>
+                        </div>
                     </a-form-item>
 
                     <a-form-item name="remember" :wrapper-col="{ offset: 17, span: 7 }">
@@ -45,7 +52,7 @@ const visible = ref<boolean>(props.visible)
 watch(
     () => props.visible,
     () => {
-        console.log('visible',visible)
+        console.log('visible', visible)
         visible.value = props.visible
     }
 )

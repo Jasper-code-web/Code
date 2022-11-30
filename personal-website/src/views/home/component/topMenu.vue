@@ -24,7 +24,7 @@
             </div>
 
         </div>
-        <login-modal :visible="visible" @change-visible="switchVisible(false)" />
+        <login-modal :visible="visible" :type="modalType" @change-visible="switchVisible(false)" />
     </div>
 </template>
 
@@ -37,10 +37,11 @@ import LoginModal from './loginModal.vue'
 
 const route = useRoute()
 const visible: Ref<boolean> = ref(false)
-
+const modalType: Ref<number> = ref(1)
 
 function changeModal(type: number) {
     switchVisible(true)
+    modalType.value = type
 }
 
 function switchVisible(state: boolean) {
