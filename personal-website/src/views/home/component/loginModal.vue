@@ -13,14 +13,16 @@
                     <a-form-item name="password" :rules="[{ required: true, message: '请输入密码' }]">
                         <a-input-password v-model:value="formState.password" placeholder="请输入密码" />
                     </a-form-item>
-                    <a-form-item name="password" :rules="[{ required: true, message: '请输入验证码' }]" v-if="type === 2">
+                    <a-form-item name="password" :rules="[{ required: type === 2, message: '请输入验证码' }]"
+                        v-if="type === 2">
                         <div style="display: flex;">
                             <a-input v-model:value="formState.password" placeholder="请输入验证码" />
-                            <a-button>验证码</a-button>
+                            <a-button style="margin-left: 30px;" @click="sendVerificationCode">{{ codeContent }}
+                            </a-button>
                         </div>
                     </a-form-item>
 
-                    <a-form-item name="remember" :wrapper-col="{ offset: 17, span: 7 }">
+                    <a-form-item name="remember" :wrapper-col="{ offset: 17, span: 7 }" v-if="type === 1">
                         <a-checkbox v-model:checked="formState.remember">记住账号</a-checkbox>
                     </a-form-item>
 
@@ -48,6 +50,8 @@ const emit = defineEmits<{
 const props = withDefaults(defineProps<Props>(), {
     visible: false
 })
+const codeContent = ref<string>("验证码")
+const totalTime = ref<number>(5)
 const visible = ref<boolean>(props.visible)
 watch(
     () => props.visible,
@@ -72,6 +76,30 @@ const formState = reactive<FormState>({
 });
 function closeModal() {
     emit('changeVisible', false)
+}
+function sendVerificationCode() {
+    var telReg = (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(formState.username))
+    if (telReg) {
+        let clock: number | undefined = undefined
+        if (totalTime.value == 5 && !clock) {
+
+            clock = window.setInterval(function () {
+                totalTime.value --
+                codeContent.value = totalTime.value + 's后重新发送'
+                if (totalTime.value < 0) {
+                    window.clearInterval(clock)
+                    clock = undefined
+                    codeContent.value = '重新发送验证码'
+                    totalTime.value = 5
+                }
+            }, 1000)
+            console.log('clock',clock)
+        } else {
+            return
+        }
+    } else {
+        alert('邮箱输入错误')
+    }
 }
 </script>
 
