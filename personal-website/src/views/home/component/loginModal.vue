@@ -17,7 +17,7 @@
                         v-if="type === 2">
                         <div style="display: flex;">
                             <a-input v-model:value="formState.password" placeholder="请输入验证码" />
-                            <a-button style="margin-left: 30px;" @click="sendVerificationCode">{{ codeContent }}
+                            <a-button type="primary" ghost style="margin-left: 30px; width: 130px; border-radius: 4px;" @click="sendVerificationCode">{{ codeContent }}
                             </a-button>
                         </div>
                     </a-form-item>
@@ -27,8 +27,7 @@
                     </a-form-item>
 
                     <a-form-item style="width: 100%">
-                        <a-button style="width: 100%; border-radius: 6px;" type="primary" html-type="submit">登录
-                        </a-button>
+                        <a-button style="width: 100%; border-radius: 6px;" type="primary" html-type="submit">{{type===1?'登录':'注册'}}</a-button>
                     </a-form-item>
                 </a-form>
             </div>
@@ -51,8 +50,11 @@ const props = withDefaults(defineProps<Props>(), {
     visible: false
 })
 const codeContent = ref<string>("验证码")
-const totalTime = ref<number>(5)
+const totalTime = ref<number>(60)
 const visible = ref<boolean>(props.visible)
+let clock: number | undefined = undefined
+
+
 watch(
     () => props.visible,
     () => {
@@ -70,7 +72,7 @@ interface FormState {
     remember: boolean;
 }
 const formState = reactive<FormState>({
-    username: '',
+    username: '111@qq.com',
     password: '',
     remember: true,
 });
@@ -80,9 +82,7 @@ function closeModal() {
 function sendVerificationCode() {
     var telReg = (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(formState.username))
     if (telReg) {
-        let clock: number | undefined = undefined
-        if (totalTime.value == 5 && !clock) {
-
+        if (totalTime.value == 60 && !clock) {
             clock = window.setInterval(function () {
                 totalTime.value --
                 codeContent.value = totalTime.value + 's后重新发送'
@@ -90,7 +90,7 @@ function sendVerificationCode() {
                     window.clearInterval(clock)
                     clock = undefined
                     codeContent.value = '重新发送验证码'
-                    totalTime.value = 5
+                    totalTime.value = 60
                 }
             }, 1000)
             console.log('clock',clock)
