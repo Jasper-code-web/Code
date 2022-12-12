@@ -27,7 +27,7 @@
                     </a-form-item>
 
                     <a-form-item style="width: 100%">
-                        <a-button style="width: 100%; border-radius: 6px;" type="primary" html-type="submit">{{type===1?'登录':'注册'}}</a-button>
+                        <a-button style="width: 100%; border-radius: 6px;" type="primary" html-type="submit" @click="enterLogin">{{type===1?'登录':'注册'}}</a-button>
                     </a-form-item>
                 </a-form>
             </div>
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { Ref } from 'vue';
+import { login } from '../config/api.config'; 
 
 export interface Props {
     visible?: boolean
@@ -79,6 +80,12 @@ const formState = reactive<FormState>({
 function closeModal() {
     emit('changeVisible', false)
 }
+
+async function enterLogin() {
+    const useInfo = await login()
+    console.log('useInfo',useInfo)
+}
+
 function sendVerificationCode() {
     var telReg = (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(formState.username))
     if (telReg) {
