@@ -12,6 +12,7 @@ interface Result {
 interface ResultData<T = any> extends Result {
     data?: T;
 }
+console.log(import.meta.env.BASE_URL)
 const URL: string =  import.meta.env.BASE_URL || ''
 enum RequestEnums {
     TIMEOUT = 20000,

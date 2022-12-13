@@ -1,16 +1,6 @@
-import { getCurrentInstance } from "vue";
+import request from "@/config/request"
 
-declare module '@vue/runtime-core' {
-    interface ComponentCustomProperties {
-        $login: any
-    }
-}
-
-
-// console.log('getCurrentInstance', getCurrentInstance.proxy)
-const { proxy }: any = getCurrentInstance();
-
-export function login() {
-    return proxy.$request('/login')
+export function login(): any {
+    return request.post('/login')
 }
 

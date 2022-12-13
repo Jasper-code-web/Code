@@ -38,12 +38,13 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { Ref } from 'vue';
-import { login } from '../config/api.config'; 
+import { login } from '../config/api.config';
 
 export interface Props {
     visible?: boolean
     type?: number
 }
+
 const emit = defineEmits<{
     (e: 'changeVisible', type: boolean): void
 }>()
@@ -54,7 +55,6 @@ const codeContent = ref<string>("验证码")
 const totalTime = ref<number>(60)
 const visible = ref<boolean>(props.visible)
 let clock: number | undefined = undefined
-
 
 watch(
     () => props.visible,
