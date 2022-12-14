@@ -20,6 +20,5 @@ export default defineConfig({
         // additionalData: '@import "./src/assets/style/global.less";
       },
     },
-  },
-  envPrefix: "APP_"
+  }
 })

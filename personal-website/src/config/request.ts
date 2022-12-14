@@ -12,8 +12,8 @@ interface Result {
 interface ResultData<T = any> extends Result {
     data?: T;
 }
-console.log(import.meta.env.BASE_URL)
-const URL: string =  import.meta.env.BASE_URL || ''
+
+const URL: string =  import.meta.env.VITE_APP_BASE_URL || ''
 enum RequestEnums {
     TIMEOUT = 20000,
     OVERDUE = 600, // 登录失效
